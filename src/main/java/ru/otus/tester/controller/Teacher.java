@@ -1,10 +1,19 @@
 package ru.otus.tester.controller;
 
-import ru.otus.tester.model.IQuestion;
+import ru.otus.tester.model.Question;
 
-public abstract class Teacher {
-    public static int letsTesting(IQuestions tasks, ICommunicator comm) {
-        IQuestion curTask;
+public class Teacher {
+
+    private final Questions tasks;
+    private final Communicator comm;
+
+    public Teacher(Questions tasks, Communicator comm) {
+        this.tasks = tasks;
+        this.comm = comm;
+    }
+
+    public int letsTesting() {
+        Question curTask;
         int rights = 0;
 
         while (tasks.hasNext()) {
@@ -29,7 +38,7 @@ public abstract class Teacher {
         return grade;
     }
 
-    private static void sayVerdict(int grade) {
+    private void sayVerdict(int grade) {
         System.out.println("Your grade: " + grade);
     }
 }

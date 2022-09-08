@@ -1,6 +1,6 @@
 package ru.otus.tester.model;
 
-public class Question implements IQuestion {
+public class Question {
 
     private final int taskId;
     private final String taskBody;
@@ -43,43 +43,35 @@ public class Question implements IQuestion {
         this.answerRight = args[6];
     }
 
-    @Override
     public int getTaskId() {
         return taskId;
     }
 
-    @Override
     public String getTaskBody() {
         return taskBody;
     }
 
-    @Override
     public String getAnswer1() {
         return answer1;
     }
 
-    @Override
     public String getAnswer2() {
         return answer2;
     }
 
-    @Override
     public String getAnswer3() {
         return answer3;
     }
 
-    @Override
     public String getAnswer4() {
         return answer4;
     }
 
-    @Override
     public String getRight() {
         return answerRight;
     }
 
     // for easy use
-    @Override
     public String toString() {
         return String.format("№%d: %s?\r\n1:\t%s\r\n2:\t%s\r\n3:\t%s\r\n4:\t%s",
                 this.getTaskId(),
