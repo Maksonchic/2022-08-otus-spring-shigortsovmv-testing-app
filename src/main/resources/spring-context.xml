@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="source"
+          class="ru.otus.tester.storage.SourceReader">
+    </bean>
+
+    <bean id="tasks"
+          class="ru.otus.tester.controller.QuestionsService"
+          init-method="init">
+        <property name="questFile" value="/questions.csv"/>
+        <property name="sourceReader" ref="source"/>
+    </bean>
+
+    <bean id="comms"
+          class="ru.otus.tester.controller.CommunicatorImpl">
+    </bean>
+
+    <bean id="teacher"
+          class="ru.otus.tester.controller.Teacher">
+        <constructor-arg index="0" ref="tasks"/>
+        <constructor-arg index="1" ref="comms"/>
+    </bean>
+
+</beans>
