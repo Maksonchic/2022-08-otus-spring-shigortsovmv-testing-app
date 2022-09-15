@@ -2,13 +2,24 @@ package ru.otus.tester.controller;
 
 import ru.otus.tester.model.Question;
 
-public class TestCommunicator implements Communicator {
+public class TestCommunicator implements StudentCommunicator {
 
     private String rightAnswer;
 
     @Override
-    public void ask(Question task) {
+    public String askLastName() {
+        return null;
+    }
+
+    @Override
+    public String askFirstName() {
+        return null;
+    }
+
+    @Override
+    public String askQuestion(Question task) {
         this.rightAnswer = task.getRight();
+        return "";
     }
 
     @Override

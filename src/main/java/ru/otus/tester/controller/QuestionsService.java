@@ -1,5 +1,7 @@
 package ru.otus.tester.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import ru.otus.tester.model.Question;
 import ru.otus.tester.storage.SourceReader;
 
@@ -12,7 +14,9 @@ public class QuestionsService implements Questions {
 
     private final ArrayList<Question> tasks;
 
+    @Value("${questions.file}")
     private String questFile;
+    @Autowired
     private SourceReader sourceReader;
 
     public QuestionsService() {
@@ -21,14 +25,7 @@ public class QuestionsService implements Questions {
 
     @Override
     public void init() throws IOException, NullPointerException {
-        this.tasks.addAll(sourceReader.createQuestionsList(this.questFile));
-    }
-
-    public void setQuestFile(String questFile) {
-        this.questFile = questFile;
-    }
-    public void setSourceReader(SourceReader sourceReader) {
-        this.sourceReader = sourceReader;
+        this.tasks.addAll(sourceReader.createQuestionsListFromFile(this.questFile));
     }
 
     @Override

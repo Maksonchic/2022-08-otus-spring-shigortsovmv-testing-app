@@ -1,18 +1,24 @@
 package ru.otus.tester.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.otus.tester.model.Question;
 
 public class Teacher {
 
+    @Autowired
     private final Questions tasks;
-    private final Communicator comm;
+    @Autowired
+    private final StudentCommunicator comm;
 
-    public Teacher(Questions tasks, Communicator comm) {
+    public Teacher(Questions tasks, StudentCommunicator comm) {
         this.tasks = tasks;
         this.comm = comm;
     }
 
     public int letsTesting() {
+        this.comm.askLastName();
+        this.comm.askFirstName();
+
         Question curTask;
         int rights = 0;
 
@@ -20,8 +26,8 @@ public class Teacher {
             // get question
             curTask = tasks.getNext();
             // ask question
-            comm.ask(curTask);
-            if (curTask.getRight().equals(comm.getAnswer())) {
+            String answer = comm.askQuestion(curTask);
+            if (curTask.getRight().equals(answer)) {
                 rights += 1;
                 System.out.println("YES\r\n");
             } else {

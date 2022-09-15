@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class SourceReader {
-    public ArrayList<Question> createQuestionsList(String file) throws IOException {
+    public ArrayList<Question> createQuestionsListFromFile(String file) throws IOException {
         BufferedReader br = new BufferedReader(
                 new InputStreamReader(
                         Objects.requireNonNull(
