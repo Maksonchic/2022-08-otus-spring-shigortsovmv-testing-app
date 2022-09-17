@@ -1,5 +1,6 @@
 package ru.otus.tester.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,8 +32,8 @@ public class AppConfig {
     }
 
     @Bean
-    Teacher teacher(Questions tasks, StudentCommunicator comm) {
-        return new Teacher(tasks, comm);
+    Teacher teacher(Questions tasks, StudentCommunicator comm, @Value("${questions.success-count-percent}") int successPercent) {
+        return new Teacher(tasks, comm, successPercent);
     }
 
 }

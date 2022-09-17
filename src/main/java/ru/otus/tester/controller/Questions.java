@@ -8,5 +8,6 @@ public interface Questions {
     boolean hasNext();
     Question getNext();
     int getTaskCount();
+    int getTasksCount();
     void init() throws IOException;
 }

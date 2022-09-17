@@ -9,10 +9,12 @@ public class Teacher {
     private final Questions tasks;
     @Autowired
     private final StudentCommunicator comm;
+    private final int successPercent;
 
-    public Teacher(Questions tasks, StudentCommunicator comm) {
+    public Teacher(Questions tasks, StudentCommunicator comm, int successPercent) {
         this.tasks = tasks;
         this.comm = comm;
+        this.successPercent = successPercent;
     }
 
     public int letsTesting() {
@@ -36,15 +38,22 @@ public class Teacher {
         }
 
         // calculate student grade
-        int grade = rights * 5 / tasks.getTaskCount();
+        int grade = rights * 5 / tasks.getTasksCount();
+
+        // get verdict
+        boolean verdict = this.calculateSuccess(rights);
 
         // show it
-        sayVerdict(grade);
+        sayVerdict(grade, verdict);
 
         return grade;
     }
 
-    private void sayVerdict(int grade) {
-        System.out.println("Your grade: " + grade);
+    private void sayVerdict(int grade, boolean success) {
+        System.out.printf("Your grade: %s of 5, %s", grade, success ? "congratulations!" : "try again((");
+    }
+
+    private boolean calculateSuccess(int rights) {
+        return rights * 100 / this.tasks.getTasksCount() > this.successPercent;
     }
 }

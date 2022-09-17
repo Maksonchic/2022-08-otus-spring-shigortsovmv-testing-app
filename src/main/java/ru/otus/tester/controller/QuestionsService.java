@@ -40,6 +40,11 @@ public class QuestionsService implements Questions {
 
     @Override
     public int getTaskCount() {
+        return this.curTaskNumber;
+    }
+
+    @Override
+    public int getTasksCount() {
         return this.tasks.size();
     }
 }
