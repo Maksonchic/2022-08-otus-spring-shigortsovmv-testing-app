@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.tester.io.StudentCommunicator;
-import ru.otus.tester.io.StudentCommunicatorImpl;
+import ru.otus.tester.io.StudentVoiceCommunicator;
+import ru.otus.tester.io.StudentVoiceCommunicatorImpl;
 import ru.otus.tester.controller.Teacher;
 import ru.otus.tester.controller.Questions;
 import ru.otus.tester.controller.QuestionsService;
@@ -34,13 +34,13 @@ public class AppConfig {
     }
 
     @Bean
-    StudentCommunicator communicator() {
-        return new StudentCommunicatorImpl();
+    StudentVoiceCommunicator communicator() {
+        return new StudentVoiceCommunicatorImpl();
     }
 
     @Bean
     Teacher teacher(Questions tasks,
-                    StudentCommunicator comm,
+                    StudentVoiceCommunicator comm,
                     TeacherVoice voice,
                     @Value("${questions.success-count-percent}") int successPercent) {
             return new Teacher(tasks, comm, voice, successPercent);

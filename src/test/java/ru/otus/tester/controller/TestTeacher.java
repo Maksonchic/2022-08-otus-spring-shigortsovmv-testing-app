@@ -10,11 +10,10 @@ public class TestTeacher {
     @Test
     void test1_autoAnswer() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestAppConfig.class);
-        Questions tasks = context.getBean(Questions.class);
         Teacher teacher = context.getBean(Teacher.class);
 
         int grade = teacher.letsTesting();
-        Assertions.assertEquals(grade, tasks.getTasksCount());
+        Assertions.assertEquals(grade, 5);
     }
 }
 

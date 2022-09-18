@@ -1,6 +1,6 @@
 package ru.otus.tester.controller;
 
-import ru.otus.tester.io.StudentCommunicator;
+import ru.otus.tester.io.StudentVoiceCommunicator;
 import ru.otus.tester.io.TeacherVoice;
 import ru.otus.tester.model.Question;
 import ru.otus.tester.model.Student;
@@ -9,16 +9,11 @@ public class Teacher {
 
     private final int successPercent;
 
-    private String curStudentFirstName;
-    private String curStudentLastName;
-
-    private Student curStudent;
-
     private final Questions tasks;
-    private final StudentCommunicator comm;
+    private final StudentVoiceCommunicator comm;
     private final TeacherVoice voice;
 
-    public Teacher(Questions tasks, StudentCommunicator comm, TeacherVoice voice, int successPercent) {
+    public Teacher(Questions tasks, StudentVoiceCommunicator comm, TeacherVoice voice, int successPercent) {
         this.tasks = tasks;
         this.comm = comm;
         this.voice = voice;
@@ -26,24 +21,24 @@ public class Teacher {
     }
 
     public int letsTesting() {
-        this.curStudent = new Student(this.comm.askFirstName(), this.comm.askLastName());
+        Student curStudent = new Student(this.comm.askFirstName(), this.comm.askLastName());
 
-        // get right answers
-        int rights = this.getTestAnswers();
+        // get student right answers
+        int rights = this.getTestAnswersAndValidateThem();
 
-        // calculate student grade
+        // calculate student grade 0 - 5
         int grade = this.calcGrade(rights);
 
         // calc verdict
         boolean verdict = this.calcSuccess(rights);
 
         // say it
-        voice.sayVerdict(this.curStudent, grade, verdict);
+        voice.sayTestVerdict(curStudent, grade, verdict);
 
         return grade;
     }
 
-    private int getTestAnswers() {
+    private int getTestAnswersAndValidateThem() {
         Question curTask;
         int rights = 0;
 
@@ -54,9 +49,9 @@ public class Teacher {
             String answer = comm.askQuestion(curTask);
             if (curTask.getRight().equals(answer)) {
                 rights += 1;
-                System.out.println("YES\r\n");
+                this.voice.say("YES");
             } else {
-                System.out.println("NO\r\n");
+                this.voice.say("NO");
             }
         }
 
@@ -65,7 +60,9 @@ public class Teacher {
 
     private int calcGrade(int rights) {
         if (tasks.getTasksCount() == 0) return 5;
-        return rights * 5 / tasks.getTasksCount();
+        int grade = rights * 5 / tasks.getTasksCount();
+        //noinspection ManualMinMaxCalculation
+        return grade < 1 ? 1 : grade;
     }
 
     private boolean calcSuccess(int rights) {

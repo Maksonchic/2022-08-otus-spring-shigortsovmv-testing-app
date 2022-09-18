@@ -2,25 +2,32 @@ package ru.otus.tester.io;
 
 import ru.otus.tester.model.Question;
 
+import java.io.PrintStream;
 import java.util.Scanner;
 
-public class StudentCommunicatorImpl implements StudentCommunicator {
+public class StudentVoiceCommunicatorImpl implements StudentVoiceCommunicator {
+
+    private final PrintStream studentWatchSource;
+
+    public StudentVoiceCommunicatorImpl() {
+        this.studentWatchSource = System.out;
+    }
 
     @Override
     public String askLastName() {
-        System.out.println("What is your surname?");
+        this.studentWatchSource.println("What is your surname?");
         return this.getAnswer();
     }
 
     @Override
     public String askFirstName() {
-        System.out.println("What is your name?");
+        this.studentWatchSource.println("What is your name?");
         return this.getAnswer();
     }
 
     @Override
     public String askQuestion(Question task) {
-        System.out.printf("Q №%d: %s?\r\n1:\t%s\r\n2:\t%s\r\n3:\t%s\r\n4:\t%s%n",
+        this.studentWatchSource.printf("Q №%d: %s?\r\n1:\t%s\r\n2:\t%s\r\n3:\t%s\r\n4:\t%s%n",
                 task.getTaskId(),
                 task.getTaskBody(),
                 task.getAnswer1(),
@@ -28,7 +35,7 @@ public class StudentCommunicatorImpl implements StudentCommunicator {
                 task.getAnswer3(),
                 task.getAnswer4());
 
-        System.out.print("answer: ");
+        this.studentWatchSource.print("answer: ");
         return this.getAnswer();
     }
 

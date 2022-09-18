@@ -1,9 +1,9 @@
-package ru.otus.tester.controller;
+package ru.otus.tester.controller.io;
 
-import ru.otus.tester.io.StudentCommunicator;
+import ru.otus.tester.io.StudentVoiceCommunicator;
 import ru.otus.tester.model.Question;
 
-public class TestCommunicator implements StudentCommunicator {
+public class TestStudentVoiceCommunicator implements StudentVoiceCommunicator {
 
     private String rightAnswer;
 
