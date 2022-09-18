@@ -1,4 +1,4 @@
-package ru.otus.tester.controller;
+package ru.otus.tester.io;
 
 import ru.otus.tester.model.Question;
 

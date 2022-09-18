@@ -1,5 +1,6 @@
 package ru.otus.tester.controller;
 
+import ru.otus.tester.io.StudentCommunicator;
 import ru.otus.tester.model.Question;
 
 public class TestCommunicator implements StudentCommunicator {
@@ -8,18 +9,18 @@ public class TestCommunicator implements StudentCommunicator {
 
     @Override
     public String askLastName() {
-        return null;
+        return "LastName_here";
     }
 
     @Override
     public String askFirstName() {
-        return null;
+        return "FirstName_here";
     }
 
     @Override
     public String askQuestion(Question task) {
         this.rightAnswer = task.getRight();
-        return "";
+        return task.getRight();
     }
 
     @Override
