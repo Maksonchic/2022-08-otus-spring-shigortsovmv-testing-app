@@ -2,6 +2,7 @@ package ru.otus.tester.exceptions;
 
 public class ReadQuestionsException extends RuntimeException {
     public ReadQuestionsException() {
+        super();
     }
 
     public ReadQuestionsException(String message) {

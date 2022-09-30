@@ -29,13 +29,12 @@ public class TeacherAskerService implements TeacherAsker {
 
     @Override
     public String askQuestion(Question task) {
-        this.out.printf("Q №%d: %s?\r\n1:\t%s\r\n2:\t%s\r\n3:\t%s\r\n4:\t%s%n",
-                task.getTaskId(),
-                task.getTaskBody(),
-                task.getAnswer1(),
-                task.getAnswer2(),
-                task.getAnswer3(),
-                task.getAnswer4());
+        this.out.printf("Question number %d: %s?", task.getTaskId(), task.getTaskBody());
+
+        for (int i = 0; i < task.getAnswers().size(); i++) {
+            this.out.printf("%s%d:\t%s", System.lineSeparator(), i + 1, task.getAnswers().get(i));
+        }
+        this.out.print(System.lineSeparator());
 
         this.out.print("answer: ");
         return this.studentCommunicator.getAnswer();

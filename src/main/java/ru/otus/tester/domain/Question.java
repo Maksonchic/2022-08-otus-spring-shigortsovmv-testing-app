@@ -1,46 +1,34 @@
 package ru.otus.tester.domain;
 
+import org.jetbrains.annotations.NotNull;
+import ru.otus.tester.exceptions.CreateQuestionException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Question {
 
     private final int taskId;
     private final String taskBody;
-    private final String answer1;
-    private final String answer2;
-    private final String answer3;
-    private final String answer4;
+    private final List<String> answers;
     private final String answerRight;
 
-    public Question(int taskId,
-                    String taskBody,
-                    String answer1,
-                    String answer2,
-                    String answer3,
-                    String answer4,
-                    String answerRight) {
-        this.taskId = taskId;
-        this.taskBody = taskBody;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.answerRight = answerRight;
+    public Question(String... args) throws CreateQuestionException {
+        if (args.length < 4) {
+            throw new CreateQuestionException("so few options");
+        }
+        this.taskId = Integer.parseInt(args[0]);
+        this.taskBody = args[1];
+        this.answers = Arrays
+                .stream(args, 2, args.length - 1)
+                .collect(Collectors.toList());
+        this.answerRight = args[args.length - 1];
     }
 
-    public Question(String... args) {
-        int taskIdTemp;
-        try {
-            taskIdTemp = Integer.parseInt(args[0]);
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            taskIdTemp = -1;
-        }
-        this.taskId = taskIdTemp;
-        this.taskBody = args[1];
-        this.answer1 = args[2];
-        this.answer2 = args[3];
-        this.answer3 = args[4];
-        this.answer4 = args[5];
-        this.answerRight = args[6];
+    public List<String> getAnswers() {
+        return answers;
     }
 
     public int getTaskId() {
@@ -51,23 +39,7 @@ public class Question {
         return taskBody;
     }
 
-    public String getAnswer1() {
-        return answer1;
-    }
-
-    public String getAnswer2() {
-        return answer2;
-    }
-
-    public String getAnswer3() {
-        return answer3;
-    }
-
-    public String getAnswer4() {
-        return answer4;
-    }
-
-    public boolean checkAnswer(final String answer) {
+    public boolean checkAnswer(@NotNull String answer) {
         return answer.equals(answerRight);
     }
 
