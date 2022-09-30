@@ -5,43 +5,51 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import ru.otus.tester.controller.*;
-import ru.otus.tester.controller.io.TestStudentVoiceCommunicator;
-import ru.otus.tester.controller.io.TestTeacherVoice;
-import ru.otus.tester.io.StudentVoiceCommunicator;
-import ru.otus.tester.io.TeacherVoice;
+import ru.otus.tester.controller.io.TestStudentCommunicatorService;
+import ru.otus.tester.controller.io.TestTeacherAskerService;
+import ru.otus.tester.io.StudentCommunicator;
+import ru.otus.tester.io.TeacherAsker;
+import ru.otus.tester.storage.ResourceProvider;
 import ru.otus.tester.storage.SourceReader;
+import ru.otus.tester.storage.ResourceProviderImpl;
+import ru.otus.tester.storage.SourceReaderService;
 
 @Configuration
-@PropertySource("application.properties")
+@PropertySource("config.properties")
 public class TestAppConfig {
 
     @Bean
-    SourceReader sourceReader() {
-        return new SourceReader();
+    SourceReader sourceReader(
+            @Value("${questions.file}") String fileName) {
+        return new SourceReaderService(fileName);
+    }
+
+    @Bean
+    ResourceProvider resourceProvider(SourceReader sourceReader) {
+        return new ResourceProviderImpl(sourceReader);
     }
 
     @Bean(initMethod = "init")
-    Questions questionsService() {
-        return new QuestionsService();
+    QuestionsHandler questionsService(ResourceProvider sourceReader) {
+        return new QuestionsHandlerService(sourceReader);
     }
 
     @Bean
-    TeacherVoice teacherVoice() {
-        return new TestTeacherVoice();
+    TeacherAsker teacherAsker() {
+        return new TestTeacherAskerService();
     }
 
     @Bean
-    StudentVoiceCommunicator communicator() {
-        return new TestStudentVoiceCommunicator();
+    StudentCommunicator communicator() {
+        return new TestStudentCommunicatorService();
     }
 
     @Bean
-    Teacher teacher(
-            Questions tasks,
-            StudentVoiceCommunicator comm,
-            TeacherVoice voice,
-            @Value("${questions.success-count-percent}") int successPercent) {
-        return new Teacher(tasks, comm, voice, successPercent);
+    Teacher teacher(QuestionsHandler tasks,
+                    StudentCommunicator studentCommunicator,
+                    TeacherAsker teacherAsker,
+                    @Value("${questions.success-count-percent}") int successPercent) {
+        return new Teacher(tasks, teacherAsker, successPercent);
     }
 
 }

@@ -1,4 +1,4 @@
-package ru.otus.tester.model;
+package ru.otus.tester.domain;
 
 public class Question {
 
@@ -67,18 +67,8 @@ public class Question {
         return answer4;
     }
 
-    public String getRight() {
-        return answerRight;
+    public boolean checkAnswer(final String answer) {
+        return answer.equals(answerRight);
     }
 
-    // for easy use
-    public String toString() {
-        return String.format("№%d: %s?\r\n1:\t%s\r\n2:\t%s\r\n3:\t%s\r\n4:\t%s",
-                this.getTaskId(),
-                this.getTaskBody(),
-                this.getAnswer1(),
-                this.getAnswer2(),
-                this.getAnswer3(),
-                this.getAnswer4());
-    }
 }

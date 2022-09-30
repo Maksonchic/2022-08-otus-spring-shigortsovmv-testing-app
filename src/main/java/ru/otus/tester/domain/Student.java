@@ -1,4 +1,4 @@
-package ru.otus.tester.model;
+package ru.otus.tester.domain;
 
 public class Student {
     private final String firstName;

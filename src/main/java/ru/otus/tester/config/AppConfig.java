@@ -3,47 +3,58 @@ package ru.otus.tester.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.tester.io.StudentVoiceCommunicator;
-import ru.otus.tester.io.StudentVoiceCommunicatorImpl;
+
 import ru.otus.tester.controller.Teacher;
-import ru.otus.tester.controller.Questions;
-import ru.otus.tester.controller.QuestionsService;
-import ru.otus.tester.io.TeacherVoice;
-import ru.otus.tester.io.TeacherVoiceConsole;
+import ru.otus.tester.controller.QuestionsHandler;
+import ru.otus.tester.controller.QuestionsHandlerService;
+import ru.otus.tester.io.StudentCommunicator;
+import ru.otus.tester.io.StudentCommunicatorService;
+import ru.otus.tester.io.TeacherAsker;
+import ru.otus.tester.io.TeacherAskerService;
+import ru.otus.tester.storage.ResourceProviderImpl;
 import ru.otus.tester.storage.SourceReader;
+import ru.otus.tester.storage.SourceReaderService;
+import ru.otus.tester.storage.ResourceProvider;
+
+import java.io.InputStream;
+import java.io.PrintStream;
 
 @Configuration
-@PropertySource("application.properties")
+@Import(ResourceProviderImpl.class)
+@PropertySource("config.properties")
 public class AppConfig {
 
     @Bean
-    SourceReader sourceReader() {
-        return new SourceReader();
+    SourceReader sourceReader(
+            @Value("${questions.file}") String fileName) {
+        return new SourceReaderService(fileName);
     }
 
     @Bean(initMethod = "init")
-    Questions questionsService() {
-        return new QuestionsService();
+    QuestionsHandler questionsHandler(ResourceProvider sourceReader) {
+        return new QuestionsHandlerService(sourceReader);
     }
 
     @Bean
-    TeacherVoice teacherVoice() {
-        return new TeacherVoiceConsole();
+    TeacherAsker teacherAsker(
+            @Value("#{T(java.lang.System).out}") PrintStream out,
+            StudentCommunicator studentCommunicator) {
+        return new TeacherAskerService(out, studentCommunicator);
     }
 
     @Bean
-    StudentVoiceCommunicator communicator() {
-        return new StudentVoiceCommunicatorImpl();
+    StudentCommunicator studentCommunicator(
+            @Value("#{T(java.lang.System).in}") InputStream in) {
+        return new StudentCommunicatorService(in);
     }
 
     @Bean
-    Teacher teacher(Questions tasks,
-                    StudentVoiceCommunicator comm,
-                    TeacherVoice voice,
+    Teacher teacher(QuestionsHandler tasks,
+                    TeacherAsker teacherAsker,
                     @Value("${questions.success-count-percent}") int successPercent) {
-            return new Teacher(tasks, comm, voice, successPercent);
+            return new Teacher(tasks, teacherAsker, successPercent);
     }
 
 }
