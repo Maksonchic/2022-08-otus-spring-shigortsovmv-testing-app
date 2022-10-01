@@ -6,9 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-import ru.otus.tester.controller.Teacher;
-import ru.otus.tester.controller.QuestionsHandler;
-import ru.otus.tester.controller.QuestionsHandlerService;
+import ru.otus.tester.controller.*;
 import ru.otus.tester.io.StudentCommunicator;
 import ru.otus.tester.io.StudentCommunicatorService;
 import ru.otus.tester.io.TeacherAsker;
@@ -25,6 +23,13 @@ import java.io.PrintStream;
 @Import(ResourceProviderImpl.class)
 @PropertySource("config.properties")
 public class AppConfig {
+
+    @Bean
+    ResultCalculator resultCalculator(
+            @Value("${questions.success-count-percent}") int successPercent,
+            QuestionsHandler questionsHandler) {
+        return new ResultCalculatorService(successPercent, questionsHandler.getTasksCount());
+    }
 
     @Bean
     SourceReader sourceReader(
@@ -53,8 +58,8 @@ public class AppConfig {
     @Bean
     Teacher teacher(QuestionsHandler tasks,
                     TeacherAsker teacherAsker,
-                    @Value("${questions.success-count-percent}") int successPercent) {
-            return new Teacher(tasks, teacherAsker, successPercent);
+                    ResultCalculator resultCalculator) {
+            return new Teacher(tasks, teacherAsker, resultCalculator);
     }
 
 }

@@ -3,30 +3,50 @@ package ru.otus.tester.controller.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.tester.controller.*;
+import ru.otus.tester.controller.Teacher;
+import ru.otus.tester.controller.QuestionsHandler;
+import ru.otus.tester.controller.QuestionsHandlerService;
+import ru.otus.tester.controller.ResultCalculator;
+import ru.otus.tester.controller.ResultCalculatorService;
 import ru.otus.tester.controller.io.TestStudentCommunicatorService;
-import ru.otus.tester.controller.io.TestTeacherAskerService;
 import ru.otus.tester.io.StudentCommunicator;
 import ru.otus.tester.io.TeacherAsker;
+import ru.otus.tester.io.TeacherAskerService;
 import ru.otus.tester.storage.ResourceProvider;
 import ru.otus.tester.storage.SourceReader;
 import ru.otus.tester.storage.ResourceProviderImpl;
 import ru.otus.tester.storage.SourceReaderService;
 
+import java.io.PrintStream;
+
 @Configuration
+@Import({
+        ResourceProviderImpl.class,
+        TestStudentCommunicatorService.class
+})
 @PropertySource("config.properties")
 public class TestAppConfig {
+
+    @Bean
+    ResultCalculator resultCalculator(
+            @Value("${questions.success-count-percent}") int successPercent,
+            QuestionsHandler questionsHandler) {
+        return new ResultCalculatorService(successPercent, questionsHandler.getTasksCount());
+    }
+
+    @Bean
+    TeacherAsker teacherAsker(
+            @Value("#{T(System).out}") PrintStream out,
+            StudentCommunicator studentCommunicator) {
+        return new TeacherAskerService(out, studentCommunicator);
+    }
 
     @Bean
     SourceReader sourceReader(
             @Value("${questions.file}") String fileName) {
         return new SourceReaderService(fileName);
-    }
-
-    @Bean
-    ResourceProvider resourceProvider(SourceReader sourceReader) {
-        return new ResourceProviderImpl(sourceReader);
     }
 
     @Bean(initMethod = "init")
@@ -35,21 +55,10 @@ public class TestAppConfig {
     }
 
     @Bean
-    TeacherAsker teacherAsker() {
-        return new TestTeacherAskerService();
-    }
-
-    @Bean
-    StudentCommunicator communicator() {
-        return new TestStudentCommunicatorService();
-    }
-
-    @Bean
     Teacher teacher(QuestionsHandler tasks,
-                    StudentCommunicator studentCommunicator,
                     TeacherAsker teacherAsker,
-                    @Value("${questions.success-count-percent}") int successPercent) {
-        return new Teacher(tasks, teacherAsker, successPercent);
+                    ResultCalculator resultCalculator) {
+        return new Teacher(tasks, teacherAsker, resultCalculator);
     }
 
 }

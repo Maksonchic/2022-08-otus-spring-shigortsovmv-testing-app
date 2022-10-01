@@ -1,19 +1,19 @@
 package ru.otus.tester.controller;
 
-import ru.otus.tester.io.TeacherAsker;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
+import ru.otus.tester.io.TeacherAsker;
 
 public class Teacher {
 
-    private final int successPercent;
-    private final QuestionsHandler tasks;
+    private final QuestionsHandler questionsHandler;
     private final TeacherAsker teacherAsker;
+    private final ResultCalculator resultCalculator;
 
-    public Teacher(QuestionsHandler tasks, TeacherAsker teacherAsker, int successPercent) {
-        this.tasks = tasks;
+    public Teacher(QuestionsHandler questionsHandler, TeacherAsker teacherAsker, ResultCalculator resultCalculator) {
+        this.questionsHandler = questionsHandler;
         this.teacherAsker = teacherAsker;
-        this.successPercent = successPercent;
+        this.resultCalculator = resultCalculator;
     }
 
     public void letsTesting() {
@@ -22,20 +22,23 @@ public class Teacher {
 
         Student curStudent = new Student(studentFirstName, studentLastName);
 
-        int rights = this.getRightCount();
-        int grade = this.calcGrade(rights); // student grade 0 - 5
-        boolean verdict = this.calcSuccess(rights);
+        int rights = this.askQuestions();
+
+        this.resultCalculator.setRightAnswers(rights);
+
+        int grade = this.resultCalculator.calcGrade(); // student grade 0 - 5
+        boolean verdict = this.resultCalculator.calcSuccess();
 
         this.teacherAsker.sayTestVerdict(curStudent, grade, verdict);
     }
 
-    private int getRightCount() {
+    private int askQuestions() {
         Question curTask;
         int rights = 0;
 
-        while (tasks.hasNext()) {
+        while (questionsHandler.hasNext()) {
             // get question
-            curTask = tasks.getNext();
+            curTask = questionsHandler.getNext();
             // ask question
             String answer = this.teacherAsker.askQuestion(curTask);
             if (curTask.checkAnswer(answer)) {
@@ -47,17 +50,5 @@ public class Teacher {
         }
 
         return rights;
-    }
-
-    private int calcGrade(int rights) {
-        if (tasks.getTasksCount() == 0) return 5;
-        int grade = rights * 5 / tasks.getTasksCount();
-        //noinspection ManualMinMaxCalculation
-        return grade < 1 ? 1 : grade;
-    }
-
-    private boolean calcSuccess(int rights) {
-        if (tasks.getTasksCount() == 0) return true;
-        return rights * 100 / this.tasks.getTasksCount() > this.successPercent;
     }
 }

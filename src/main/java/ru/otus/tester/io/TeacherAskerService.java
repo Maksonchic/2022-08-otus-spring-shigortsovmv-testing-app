@@ -36,7 +36,7 @@ public class TeacherAskerService implements TeacherAsker {
         }
         this.out.print(System.lineSeparator());
 
-        this.out.print("answer: ");
+        this.out.print("answer number: ");
         return this.studentCommunicator.getAnswer();
     }
 

@@ -1,30 +1,31 @@
 package ru.otus.tester.domain;
 
-import org.jetbrains.annotations.NotNull;
 import ru.otus.tester.exceptions.CreateQuestionException;
+import ru.otus.tester.exceptions.WorkQuestionsException;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Question {
 
     private final int taskId;
     private final String taskBody;
     private final List<String> answers;
-    private final String answerRight;
+    private final int answerRight;
 
-    public Question(String... args) throws CreateQuestionException {
-        if (args.length < 4) {
+    public Question(
+            String taskId,
+            String taskBody,
+            String answerRightNum,
+            String... answers) throws CreateQuestionException {
+        try {
+            this.taskId = Integer.parseInt(taskId);
+            this.taskBody = taskBody;
+            this.answerRight = Integer.parseInt(answerRightNum);
+        } catch (NumberFormatException e) {
             throw new CreateQuestionException("so few options");
         }
-        this.taskId = Integer.parseInt(args[0]);
-        this.taskBody = args[1];
-        this.answers = Arrays
-                .stream(args, 2, args.length - 1)
-                .collect(Collectors.toList());
-        this.answerRight = args[args.length - 1];
+        this.answers = Arrays.asList(answers);
     }
 
     public List<String> getAnswers() {
@@ -39,8 +40,12 @@ public class Question {
         return taskBody;
     }
 
-    public boolean checkAnswer(@NotNull String answer) {
-        return answer.equals(answerRight);
+    public boolean checkAnswer(String answer) throws WorkQuestionsException {
+        try {
+            return answerRight == Integer.parseInt(answer);
+        } catch (NumberFormatException e) {
+            throw new WorkQuestionsException(e);
+        }
     }
 
 }
