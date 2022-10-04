@@ -1,5 +1,6 @@
 package ru.otus.tester.storage;
 
+import org.springframework.beans.factory.annotation.Value;
 import ru.otus.tester.controller.QuestionsHandlerService;
 import ru.otus.tester.exceptions.ReadQuestionsException;
 
@@ -14,7 +15,7 @@ public class SourceReaderService implements SourceReader {
 
     private final String questionsFile;
 
-    public SourceReaderService(String questionsFile) {
+    public SourceReaderService(@Value("${questions.file}") String questionsFile) {
         this.questionsFile = questionsFile;
     }
 

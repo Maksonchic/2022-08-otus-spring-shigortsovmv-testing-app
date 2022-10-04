@@ -14,17 +14,13 @@ public class Question {
     private final int answerRight;
 
     public Question(
-            String taskId,
+            int taskId,
             String taskBody,
             String answerRightNum,
             String... answers) throws CreateQuestionException {
-        try {
-            this.taskId = Integer.parseInt(taskId);
-            this.taskBody = taskBody;
-            this.answerRight = Integer.parseInt(answerRightNum);
-        } catch (NumberFormatException e) {
-            throw new CreateQuestionException("so few options");
-        }
+        this.taskId = taskId;
+        this.taskBody = taskBody;
+        this.answerRight = Integer.parseInt(answerRightNum);
         this.answers = Arrays.asList(answers);
     }
 

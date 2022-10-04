@@ -1,5 +1,6 @@
 package ru.otus.tester.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
 import ru.otus.tester.io.TeacherAsker;
@@ -10,7 +11,10 @@ public class Teacher {
     private final TeacherAsker teacherAsker;
     private final ResultCalculator resultCalculator;
 
-    public Teacher(QuestionsHandler questionsHandler, TeacherAsker teacherAsker, ResultCalculator resultCalculator) {
+    public Teacher(
+            @Autowired QuestionsHandler questionsHandler,
+            @Autowired TeacherAsker teacherAsker,
+            @Autowired ResultCalculator resultCalculator) {
         this.questionsHandler = questionsHandler;
         this.teacherAsker = teacherAsker;
         this.resultCalculator = resultCalculator;
