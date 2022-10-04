@@ -1,27 +1,19 @@
 package ru.otus.tester.controller;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.otus.tester.controller.config.TestAppConfig;
+import ru.otus.tester.exceptions.WorkQuestionsException;
 
-import java.io.IOException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestTeacher {
-
-    @DisplayName("Single test successful")
     @Test
     void test1_autoAnswer() {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
-        Questions test = context.getBean(QuestionsService.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(TestAppConfig.class);
         Teacher teacher = context.getBean(Teacher.class);
 
-        try {
-            test.init();
-            Assertions.assertEquals(teacher.letsTesting(), 5);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        assertThrows(WorkQuestionsException.class, teacher::letsTesting);
     }
 }
 

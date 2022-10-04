@@ -1,44 +1,54 @@
 package ru.otus.tester.controller;
 
-import ru.otus.tester.model.Question;
+import ru.otus.tester.domain.Question;
+import ru.otus.tester.domain.Student;
+import ru.otus.tester.io.TeacherAsker;
 
 public class Teacher {
 
-    private final Questions tasks;
-    private final Communicator comm;
+    private final QuestionsHandler questionsHandler;
+    private final TeacherAsker teacherAsker;
+    private final ResultCalculator resultCalculator;
 
-    public Teacher(Questions tasks, Communicator comm) {
-        this.tasks = tasks;
-        this.comm = comm;
+    public Teacher(QuestionsHandler questionsHandler, TeacherAsker teacherAsker, ResultCalculator resultCalculator) {
+        this.questionsHandler = questionsHandler;
+        this.teacherAsker = teacherAsker;
+        this.resultCalculator = resultCalculator;
     }
 
-    public int letsTesting() {
+    public void letsTesting() {
+        String studentFirstName = this.teacherAsker.askFirstName();
+        String studentLastName = this.teacherAsker.askLastName();
+
+        Student curStudent = new Student(studentFirstName, studentLastName);
+
+        int rights = this.askQuestions();
+
+        this.resultCalculator.setRightAnswers(rights);
+
+        int grade = this.resultCalculator.calcGrade(); // student grade 0 - 5
+        boolean verdict = this.resultCalculator.calcSuccess();
+
+        this.teacherAsker.sayTestVerdict(curStudent, grade, verdict);
+    }
+
+    private int askQuestions() {
         Question curTask;
         int rights = 0;
 
-        while (tasks.hasNext()) {
+        while (questionsHandler.hasNext()) {
             // get question
-            curTask = tasks.getNext();
+            curTask = questionsHandler.getNext();
             // ask question
-            comm.ask(curTask);
-            if (curTask.getRight().equals(comm.getAnswer())) {
+            String answer = this.teacherAsker.askQuestion(curTask);
+            if (curTask.checkAnswer(answer)) {
                 rights += 1;
-                System.out.println("YES\r\n");
+                this.teacherAsker.say("YES");
             } else {
-                System.out.println("NO\r\n");
+                this.teacherAsker.say("NO");
             }
         }
 
-        // calculate student grade
-        int grade = rights * 5 / tasks.getTaskCount();
-
-        // show it
-        sayVerdict(grade);
-
-        return grade;
-    }
-
-    private void sayVerdict(int grade) {
-        System.out.println("Your grade: " + grade);
+        return rights;
     }
 }
