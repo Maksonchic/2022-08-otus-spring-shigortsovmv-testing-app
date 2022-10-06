@@ -30,23 +30,10 @@ import java.io.PrintStream;
 public class TestAppConfig {
 
     @Bean
-    ResultCalculator resultCalculator(
-            @Value("${questions.success-count-percent}") int successPercent,
-            QuestionsHandler questionsHandler) {
-        return new ResultCalculatorService(successPercent, questionsHandler.getTasksCount());
-    }
-
-    @Bean
     TeacherAsker teacherAsker(
             @Value("#{T(System).out}") PrintStream out,
             StudentCommunicator studentCommunicator) {
         return new TeacherAskerService(out, studentCommunicator);
-    }
-
-    @Bean
-    SourceReader sourceReader(
-            @Value("${questions.file}") String fileName) {
-        return new SourceReaderService(fileName);
     }
 
     @Bean(initMethod = "init")

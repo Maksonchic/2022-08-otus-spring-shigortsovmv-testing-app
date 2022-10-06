@@ -1,14 +1,16 @@
 package ru.otus.tester.controller;
 
+import ru.otus.tester.config.QuestProps;
+
 public class ResultCalculatorService implements ResultCalculator {
 
     private int rightAnswers;
     private final int tasksCount;
     private final int successPercent;
 
-    public ResultCalculatorService(int successPercent, int tasksCount) {
-        this.successPercent = successPercent;
-        this.tasksCount = tasksCount;
+    public ResultCalculatorService(QuestProps appProps, QuestionsHandler questionsHandler) {
+        this.successPercent = appProps.getSuccessCountPercent();
+        this.tasksCount = questionsHandler.getTasksCount();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package ru.otus.tester.io;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
@@ -14,7 +13,7 @@ public class TeacherAskerService implements TeacherAsker {
 
     public TeacherAskerService(
             @Value("#{T(java.lang.System).out}") PrintStream out,
-            @Autowired StudentCommunicator studentCommunicator) {
+            StudentCommunicator studentCommunicator) {
         this.out = out;
         this.studentCommunicator = studentCommunicator;
     }
