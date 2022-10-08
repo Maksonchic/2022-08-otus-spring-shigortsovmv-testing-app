@@ -1,11 +1,14 @@
 package ru.otus.tester.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "questions")
 public class QuestProps {
     private String file;
     private int successCountPercent;
+    @Value("${application.locale}")
+    private String locale;
 
     @SuppressWarnings("unused")
     public void setFile(String file) {
@@ -18,7 +21,7 @@ public class QuestProps {
     }
 
     public String getFile() {
-        return file;
+        return file + "_" + this.locale + ".csv";
     }
 
     public int getSuccessCountPercent() {

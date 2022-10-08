@@ -8,6 +8,7 @@
 		<version>2.7.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+
 	<groupId>ru.otus</groupId>
 	<artifactId>TestingApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -75,13 +76,6 @@
 					<mainClass>ru.otus.tester.Main</mainClass>
 					<executable>true</executable>
 				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

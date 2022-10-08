@@ -20,9 +20,10 @@ import ru.otus.tester.storage.ResourceProvider;
         SourceReaderService.class,
         StudentCommunicatorService.class,
         Teacher.class,
-        TeacherAskerService.class,
         ResultCalculatorService.class,
-        QuestProps.class
+        QuestProps.class,
+        ConverterService.class,
+        TeacherAskerService.class
 })
 public class AppConfig {
 
