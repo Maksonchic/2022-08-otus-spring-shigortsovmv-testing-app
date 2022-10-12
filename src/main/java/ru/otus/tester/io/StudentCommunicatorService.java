@@ -1,10 +1,12 @@
 package ru.otus.tester.io;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.Scanner;
 
+@Service
 public class StudentCommunicatorService implements StudentCommunicator {
 
     private final InputStream in;

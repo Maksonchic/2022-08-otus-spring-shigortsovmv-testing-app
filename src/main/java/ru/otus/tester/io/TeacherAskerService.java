@@ -1,22 +1,24 @@
 package ru.otus.tester.io;
 
 import org.springframework.beans.factory.annotation.Value;
-import ru.otus.tester.config.Converter;
+import org.springframework.stereotype.Service;
+import ru.otus.tester.config.Localizator;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
 
 import java.io.PrintStream;
 
+@Service
 public class TeacherAskerService implements TeacherAsker {
 
     private final StudentCommunicator studentCommunicator;
     private final PrintStream out;
-    private final Converter converter;
+    private final Localizator converter;
 
     public TeacherAskerService(
             StudentCommunicator studentCommunicator,
             @Value("#{T(java.lang.System).out}") PrintStream out,
-            Converter converter) {
+            Localizator converter) {
         this.studentCommunicator = studentCommunicator;
         this.out = out;
         this.converter = converter;

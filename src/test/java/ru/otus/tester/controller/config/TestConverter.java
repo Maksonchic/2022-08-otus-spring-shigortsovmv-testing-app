@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.util.ReflectionTestUtils;
-import ru.otus.tester.config.ConverterService;
+import ru.otus.tester.config.LocalizatorService;
 import ru.otus.tester.config.QuestProps;
 import ru.otus.tester.controller.ResultCalculatorService;
 import ru.otus.tester.controller.Teacher;
@@ -30,7 +30,7 @@ public class TestConverter {
 
     @Configuration
     @EnableAutoConfiguration
-    @Import(ConverterService.class)
+    @Import(LocalizatorService.class)
     static class A {}
 
     @Autowired
@@ -39,28 +39,28 @@ public class TestConverter {
 
     @Autowired
     @SuppressWarnings("unused")
-    private ConverterService converterService;
+    private LocalizatorService localizatorService;
 
     @DisplayName("Проверка локализации для Англ")
     @Test
     void localizeValEn() {
-        ReflectionTestUtils.setField(converterService, "locale", Locale.forLanguageTag("en"));
-        assertEquals("en_val1", converterService.localize("test.val1"));
-        assertEquals("en_val2", converterService.localize("test.val2"));
+        ReflectionTestUtils.setField(localizatorService, "locale", Locale.forLanguageTag("en"));
+        assertEquals("en_val1", localizatorService.localize("test.val1"));
+        assertEquals("en_val2", localizatorService.localize("test.val2"));
     }
 
     @DisplayName("Проверка локализации для Рус")
     @Test
     void localizeValRu() {
-        ReflectionTestUtils.setField(converterService, "locale", Locale.forLanguageTag("ru"));
-        assertEquals("ру_вал1", converterService.localize("test.val1"));
-        assertEquals("ру_вал2", converterService.localize("test.val2"));
+        ReflectionTestUtils.setField(localizatorService, "locale", Locale.forLanguageTag("ru"));
+        assertEquals("ру_вал1", localizatorService.localize("test.val1"));
+        assertEquals("ру_вал2", localizatorService.localize("test.val2"));
     }
 
     @DisplayName("Проверка наличия ConverterService бина")
     @Test
     void hasConverterService() {
-        assertDoesNotThrow(() -> context.getBean(ConverterService.class));
+        assertDoesNotThrow(() -> context.getBean(LocalizatorService.class));
     }
 
     @DisplayName("Проверка наличия прочего контекста")

@@ -1,9 +1,11 @@
 package ru.otus.tester.controller;
 
+import org.springframework.stereotype.Component;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
 import ru.otus.tester.io.TeacherAsker;
 
+@Component
 public class Teacher {
 
     private final QuestionsHandler questionsHandler;

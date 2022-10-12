@@ -1,5 +1,6 @@
 package ru.otus.tester.storage;
 
+import org.springframework.stereotype.Service;
 import ru.otus.tester.config.QuestProps;
 import ru.otus.tester.controller.QuestionsHandlerService;
 import ru.otus.tester.exceptions.ReadQuestionsException;
@@ -11,6 +12,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class SourceReaderService implements SourceReader {
 
     private final String questionsFile;

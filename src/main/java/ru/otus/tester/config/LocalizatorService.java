@@ -2,16 +2,18 @@ package ru.otus.tester.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Locale;
 
-public class ConverterService implements Converter {
+@Service
+public class LocalizatorService implements Localizator {
 
     private final MessageSource messageSource;
     private final Locale locale;
 
-    public ConverterService(
+    public LocalizatorService(
             MessageSource messageSource,
             @Value("${application.locale}") String locale) {
         this.messageSource = messageSource;

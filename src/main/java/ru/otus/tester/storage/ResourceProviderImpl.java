@@ -1,5 +1,6 @@
 package ru.otus.tester.storage;
 
+import org.springframework.stereotype.Component;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.exceptions.CreateQuestionException;
 import ru.otus.tester.exceptions.ReadQuestionsException;
@@ -8,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ResourceProviderImpl implements ResourceProvider {
 
     private final SourceReader sourceReader;

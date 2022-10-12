@@ -1,7 +1,9 @@
 package ru.otus.tester.controller;
 
+import org.springframework.stereotype.Service;
 import ru.otus.tester.config.QuestProps;
 
+@Service
 public class ResultCalculatorService implements ResultCalculator {
 
     private int rightAnswers;
