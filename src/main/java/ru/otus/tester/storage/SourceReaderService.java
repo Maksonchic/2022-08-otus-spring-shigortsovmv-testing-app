@@ -23,15 +23,12 @@ public class SourceReaderService implements SourceReader {
 
     @Override
     public List<String> getQuestionsDataList() {
-        BufferedReader br =
-                new BufferedReader(
-                        new InputStreamReader(
-                                this.getQuestionsStream()));
+        List<String> tasks;
 
-
-        List<String> tasks = new ArrayList<>();
-        String line;
-        try {
+        try(InputStream is = this.getQuestionsStream()) {
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            tasks = new ArrayList<>();
+            String line;
             while ((line = br.readLine()) != null) {
                 tasks.add(line);
             }
