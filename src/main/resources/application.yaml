@@ -1,0 +1,14 @@
+spring:
+  messages:
+    basename: i18n/appmessages
+    encoding: UTF-8
+  output:
+    ansi:
+      enabled: ALWAYS
+
+questions:
+  file: /questions
+  success-count-percent: 40
+
+application:
+  locale: ru

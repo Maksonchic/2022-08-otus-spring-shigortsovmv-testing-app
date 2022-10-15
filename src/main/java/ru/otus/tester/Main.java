@@ -1,12 +1,15 @@
 package ru.otus.tester;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.otus.tester.config.AppConfig;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ConfigurableApplicationContext;
 import ru.otus.tester.controller.Teacher;
 
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        ConfigurableApplicationContext context = SpringApplication.run(Main.class, args);
         Teacher teacher = context.getBean(Teacher.class);
 
         teacher.letsTesting();

@@ -1,56 +1,69 @@
 package ru.otus.tester.io;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import ru.otus.tester.config.Localizator;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
 
 import java.io.PrintStream;
 
+@Service
 public class TeacherAskerService implements TeacherAsker {
 
-    private final PrintStream out;
     private final StudentCommunicator studentCommunicator;
+    private final PrintStream out;
+    private final Localizator converter;
 
-    public TeacherAskerService(PrintStream out, StudentCommunicator studentCommunicator) {
-        this.out = out;
+    public TeacherAskerService(
+            StudentCommunicator studentCommunicator,
+            @Value("#{T(java.lang.System).out}") PrintStream out,
+            Localizator converter) {
         this.studentCommunicator = studentCommunicator;
+        this.out = out;
+        this.converter = converter;
     }
 
     @Override
     public String askLastName() {
-        this.out.println("What is your surname?");
+        this.out.println(this.converter.localize("teacher.whats-surname"));
         return this.studentCommunicator.getAnswer();
     }
 
     @Override
     public String askFirstName() {
-        this.out.println("What is your name?");
+        this.out.println(this.converter.localize("teacher.whats-name"));
         return this.studentCommunicator.getAnswer();
     }
 
     @Override
     public String askQuestion(Question task) {
-        this.out.printf("Question number %d: %s?", task.getTaskId(), task.getTaskBody());
+        this.out.print(this.converter.localize(
+                "teacher.question-number", task.getTaskId(), task.getTaskBody()));
 
         for (int i = 0; i < task.getAnswers().size(); i++) {
             this.out.printf("%s%d:\t%s", System.lineSeparator(), i + 1, task.getAnswers().get(i));
         }
-        this.out.print(System.lineSeparator());
+        this.out.println();
 
-        this.out.print("answer number: ");
+        this.out.print(this.converter.localize("teacher.answer-number"));
         return this.studentCommunicator.getAnswer();
     }
 
     @Override
     public void sayTestVerdict(Student student, int grade, boolean success) {
-        this.out.printf("%s %s, your grade: %s of 5, %s"
-                , student.getLastName()
-                , student.getFirstName()
-                , grade
-                , success ? "congratulations!" : "try again((");
+        this.out.print(
+                this.converter.localize("teacher.grade-final"
+                        , student.getLastName()
+                        , student.getFirstName()
+                        , grade) + ". ");
+
+        this.out.println(this.converter.localize(
+                success ? "teacher.success-final-yes" : "teacher.success-final-no"));
     }
 
     @Override
-    public void say(String text) {
-        this.out.println(text);
+    public void say(String textCode) {
+        this.out.println(this.converter.localize(textCode));
     }
 }

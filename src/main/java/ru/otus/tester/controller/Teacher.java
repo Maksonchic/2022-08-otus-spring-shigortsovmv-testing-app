@@ -1,16 +1,21 @@
 package ru.otus.tester.controller;
 
+import org.springframework.stereotype.Component;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.domain.Student;
 import ru.otus.tester.io.TeacherAsker;
 
+@Component
 public class Teacher {
 
     private final QuestionsHandler questionsHandler;
     private final TeacherAsker teacherAsker;
     private final ResultCalculator resultCalculator;
 
-    public Teacher(QuestionsHandler questionsHandler, TeacherAsker teacherAsker, ResultCalculator resultCalculator) {
+    public Teacher(
+            QuestionsHandler questionsHandler,
+            TeacherAsker teacherAsker,
+            ResultCalculator resultCalculator) {
         this.questionsHandler = questionsHandler;
         this.teacherAsker = teacherAsker;
         this.resultCalculator = resultCalculator;
@@ -43,9 +48,9 @@ public class Teacher {
             String answer = this.teacherAsker.askQuestion(curTask);
             if (curTask.checkAnswer(answer)) {
                 rights += 1;
-                this.teacherAsker.say("YES");
+                this.teacherAsker.say("teacher.yes");
             } else {
-                this.teacherAsker.say("NO");
+                this.teacherAsker.say("teacher.no");
             }
         }
 
