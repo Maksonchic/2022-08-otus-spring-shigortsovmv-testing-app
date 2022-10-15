@@ -54,8 +54,8 @@ public class TeacherAskerService implements TeacherAsker {
     public void sayTestVerdict(Student student, int grade, boolean success) {
         this.out.print(
                 this.converter.localize("teacher.grade-final"
-                        , student.getLastName()
-                        , student.getFirstName()
+                        , student.lastName()
+                        , student.firstName()
                         , grade) + ". ");
 
         this.out.println(this.converter.localize(

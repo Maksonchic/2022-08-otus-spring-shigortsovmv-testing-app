@@ -30,7 +30,7 @@ public class SourceReaderService implements SourceReader {
 
 
         List<String> tasks = new ArrayList<>();
-        String line = "";
+        String line;
         try {
             while ((line = br.readLine()) != null) {
                 tasks.add(line);
