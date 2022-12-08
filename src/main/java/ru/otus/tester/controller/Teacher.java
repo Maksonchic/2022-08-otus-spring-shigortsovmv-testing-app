@@ -29,7 +29,7 @@ public class Teacher {
 
         int rights = this.askQuestions();
 
-        this.resultCalculator.setRightAnswers(rights);
+        this.resultCalculator.setCurParams(rights, questionsHandler.getTasksCount());
 
         int grade = this.resultCalculator.calcGrade(); // student grade 0 - 5
         boolean verdict = this.resultCalculator.calcSuccess();

@@ -4,27 +4,26 @@ import org.springframework.stereotype.Service;
 import ru.otus.tester.domain.Question;
 import ru.otus.tester.storage.ResourceProvider;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class QuestionsHandlerService implements QuestionsHandler {
 
-    private int curTaskNumber = 0;
+    private int curTaskNumber;
 
-    private final List<Question> tasks;
+    private List<Question> tasks;
 
     private final ResourceProvider resourceProvider;
 
     public QuestionsHandlerService(ResourceProvider sourceReader) {
         this.resourceProvider = sourceReader;
-        this.tasks = new ArrayList<>();
     }
 
     @Override
-    @PostConstruct
     public void init() {
+        this.curTaskNumber = 0;
+        this.tasks = new ArrayList<>();
         this.tasks.addAll(resourceProvider.createQuestionsList());
     }
 
